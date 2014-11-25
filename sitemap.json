@@ -1,0 +1,23 @@
+[
+      {
+          "name": "http://www.esgi.fr/actualites.html",  
+          "errors": [],
+          "warnings": []
+      }, { 
+          "name": "http://www.esgi.fr/deterjesuis.html", 
+          "errors": [{
+              "emplacement":"Line 5, Column 26",
+              "def": "There is no attribute \"lang\"",
+              "ligne": "<html xml:lang=\"en\" lang=\"en\" xmlns=\"http://www.w3.org/1999/xhtml\">"
+          }, {
+              "emplacement":"Line 8, Column 14",
+              "def": "there is no attribute \"type\"",
+              "ligne": "<script type=\"text/javascript\">"
+          }],
+          "warnings": [{
+              "emplacement":"Line 25, Column 83",
+              "def": "element \"script\" undefined",
+              "ligne": "…typo3temp/javascript_93077bb238.js?1362565175\" type=\"text/javascript\">"
+          }]
+      }
+]

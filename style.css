@@ -1,0 +1,91 @@
+ /*!
+  * Ajout de quelques règles pour 
+  * la Todo List
+  */
+  
+header h1{
+	text-align:center;
+}
+
+.left{float:left;}
+.right{float:right;}
+
+p{
+	margin:20px;
+	margin-top:100px;
+}
+
+.blue-box {
+	background: #365D95 ;
+	border: 1px solid #ccc;
+	border-top-left-radius: 2px;
+	border-top-right-radius: 2px;
+	box-shadow: 0 2px 6px 0 rgba(0, 0, 0, 0.2),
+				0 25px 50px 0 rgba(0, 0, 0, 0.15);
+}
+
+.more {
+	background: #365D95 ;
+}
+
+#connexion {
+	margin: 80px 35% 40px;
+	width:30%;
+}
+#sitemap{
+	margin: 0px 25% 40px;
+	width:50%;
+}
+
+
+form {
+    margin:15px;
+    display: block;
+}
+label {
+    width:100%;
+}
+
+
+input[type="text"], input[type="password"], input[type="url"] {
+    position: relative;
+	outline: none;
+	color: inherit;
+	box-shadow: inset 0 -1px 5px 0 rgba(0, 0, 0, 0.2);
+}
+
+#connexion input[type="text"], #connexion input[type="password"] {
+	margin: 10px auto 10px;
+	width: 80%;
+	font-size: 15px;
+	font-family: inherit;
+	line-height: 1.2em;
+	padding: 6px;
+	border: 1px solid #999;
+}
+
+#sitemap input[type="text"], #sitemap input[type="url"] {
+	margin: auto;
+	padding: 6px;
+	width: 85%;
+	font-size: 15px;
+	font-family: inherit;
+	line-height: 1.2em;
+	border: 1px solid #999;
+}
+
+#sitemap input[type="submit"] {
+	margin: auto;
+	padding: 6px;
+    color: #365D95;
+}
+
+.result  {
+    padding: 20px;
+    text-align: center
+}
+
+.tb-result {
+    border: 1px solid #365D95;
+    margin: 0px;
+}
