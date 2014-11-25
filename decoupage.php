@@ -2,10 +2,15 @@
 
 class AdresseUrl {
 	var $loc;
+	
+
 
 	function AdresseUrl ($aa) {
 		foreach ($aa as $k=>$v)
-			$this->$k = $aa[$k];
+		{
+			/* DE BASE $this->$k = $aa[$k]; */
+			$this->$k = RecuperationInfo($aa[$k]);
+		}
 	}
 }
 
@@ -38,6 +43,33 @@ function parseMol($mvalues) {
 	return new AdresseUrl($mol);
 }
 
+	function RecuperationInfo ($url) {
+		
+		//Construction du lien W3C
+		$url = "http://validator.w3.org/check?uri=".$url."&charset=%28detect+automatically%29&doctype=Inline&ss=1&outline=1&group=0&verbose=1&user-agent=W3C_Validator%2F1.3+http%3A%2F%2Fvalidator.w3.org%2Fservices";
+		// INITIALISATION cURL
+		$ch = curl_init();
+		// Page à récupérer
+		curl_setopt($ch, CURLOPT_URL, $url);
+		// Retour de la page
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+		// Retour dans un tableau
+		$resultat = curl_exec ($ch);
+		// Enregistrement du contenue
+		$w3cPage = new DOMDocument();
+		$w3cPage->loadHTML($resultat);
+		//recherche de la div msg_err
+		foreach($w3cPage->getElementsByTagName('div') as $div){
+    		if($div->getAttribute('class') == "msg_err"){
+				// Selection des infos
+				$ligne = $div->getElementsByTagName('em')->nodeValue;
+				echo($ligne);
+			}
+    	}
+		
+		return $url;
+	}
+
 $db = readDatabase($_GET['sitemap']);
-echo json_encode($db);
+/*echo json_encode($db);*/
 ?>

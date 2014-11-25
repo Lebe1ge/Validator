@@ -1,7 +1,6 @@
 (function () {
 	
-	
-		var app = angular.module('connect', []);
+	var app = angular.module('connect', []);
 	
 	app.controller('SitemapController', ['$http', '$scope', function ($http, $scope) {
 	}]);
@@ -12,22 +11,23 @@
             restrict: 'E',
             templateUrl: "search.php",
             controller: ['$http', '$scope', function ($http, $scope) {
-				var sitemap ='';
+				var sitemap = '';
 				$scope.urls = {};
 				
 				
-				function callback (url_sitemap) {
+				function callback(url_sitemap) {
 					
-					if(url_sitemap != '')
-					{	
+					if (url_sitemap !== '')
+					{
 						$http.get('./decoupage.php?sitemap=' + url_sitemap)
 						.success(function (data) {
-							$scope.urls = data;
+							console.log(data);
+							//$scope.urls = data;
 						}).error(function (data, status, headers, config) {
-							alert("ERREUR");
+							console.log("ERREUR");
 						});
 					}
-					else
+					else 
 					{
 						console.log("Sitemap VIDE");
 					}
@@ -40,16 +40,10 @@
 							sitemap = data;
 							callback(sitemap)
 						}).error(function (data, status, headers, config) {
-							alert("ERREUR");
+							console.log("ERREUR");
 						});
 					}
                 };
-				
-
-						
-						
-						// CALLBACK
-						
             }],
             controllerAs: "search"
         };
