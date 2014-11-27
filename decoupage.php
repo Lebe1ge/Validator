@@ -2,14 +2,27 @@
 
 class AdresseUrl {
 	var $loc;
+	var $erreurs;
 	
-
-
 	function AdresseUrl ($aa) {
+		
 		foreach ($aa as $k=>$v)
 		{
-			/* DE BASE $this->$k = $aa[$k]; */
-			$this->$k = RecuperationInfo($aa[$k]);
+			$this->$k = $aa[$k];
+			$this->erreurs = RecuperationInfo($this, $aa[$k]);
+		}
+	}
+}
+
+class Rorre {
+	var $ligne;
+	var $titre;
+	var $code;
+	
+	function Rorre ($aa) {
+		foreach ($aa as $k=>$v)
+		{
+			$this->$k = $aa[$k];
 		}
 	}
 }
@@ -39,14 +52,20 @@ function readDatabase($filename) {
 
 function parseMol($mvalues) {
 	for ($i=0; $i < count($mvalues); $i++)
+	{
 		$mol[$mvalues[$i]["tag"]] = $mvalues[$i]["value"];
-	return new AdresseUrl($mol);
+		
+	}
+	$obj = new AdresseUrl($mol);
+	//$obj->erreurs = new Rorre($obj->log);
+	//$obj = RecuperationInfo($mol);	
+	return $obj;
 }
 
-	function RecuperationInfo ($url) {
-		
+	function RecuperationInfo ($obj, $url) {
 		//Construction du lien W3C
-		$url = "http://validator.w3.org/check?uri=".$url."&charset=%28detect+automatically%29&doctype=Inline&ss=1&outline=1&group=0&verbose=1&user-agent=W3C_Validator%2F1.3+http%3A%2F%2Fvalidator.w3.org%2Fservices";
+		/* URL ONLINE : $url = "http://validator.w3.org/check?uri=".$url."&charset=%28detect+automatically%29&doctype=Inline&ss=1&outline=1&group=0&verbose=1&user-agent=W3C_Validator%2F1.3+http%3A%2F%2Fvalidator.w3.org%2Fservices";*/
+		$url = "file:///C:/wamp/www/Validator/tmp/1416907869/w3c.html";
 		// INITIALISATION cURL
 		$ch = curl_init();
 		// Page à récupérer
@@ -59,17 +78,22 @@ function parseMol($mvalues) {
 		$w3cPage = new DOMDocument();
 		$w3cPage->loadHTML($resultat);
 		//recherche de la div msg_err
-		foreach($w3cPage->getElementsByTagName('div') as $div){
-    		if($div->getAttribute('class') == "msg_err"){
+		foreach($w3cPage->getElementsByTagName('li') as $li){
+    		if($li->getAttribute('class') == "msg_err"){
 				// Selection des infos
-				$ligne = $div->getElementsByTagName('em')->nodeValue;
-				echo($ligne);
+				$ligne = $li->getElementsByTagName('em')->item(0)->nodeValue;
+				$titre = $li->getElementsByTagName('span')->item(1)->nodeValue;
+				$code = $li->getElementsByTagName('code')->item(0)->nodeValue;
+				$info = array (
+					'ligne' => $ligne,
+					'titre' => $titre,
+					'code' => $code);
+				$erreur[] = new Rorre($info);
 			}
     	}
-		
-		return $url;
+		return $erreur;
 	}
 
 $db = readDatabase($_GET['sitemap']);
-/*echo json_encode($db);*/
+echo json_encode($db);
 ?>
