@@ -90,22 +90,13 @@ input[type="text"], input[type="password"], input[type="url"] {
     margin: 0px;
 }
 
-.animate-show {
-  line-height: 20px;
-  opacity: 1;
-  padding: 10px;
-  border: 1px solid black;
-  background: white;
+.derouleur {
+     transform: scaleY(0);
+     transform-origin: 50% 0;
+     transition:transform 1s ease;
 }
-
-.animate-show.ng-hide-add.ng-hide-add-active,
-.animate-show.ng-hide-remove.ng-hide-remove-active {
-  -webkit-transition: all linear 0.5s;
-  transition: all linear 0.5s;
+.deroulement:hover {
+     transform: scaleY(1);
 }
-
-.animate-show.ng-hide {
-  line-height: 0;
-  opacity: 0;
-  padding: 0 10px;
+	
 }

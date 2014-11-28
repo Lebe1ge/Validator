@@ -9,22 +9,10 @@ class AdresseUrl {
 		
 		foreach ($aa as $k=>$v)
 		{
-			
 			$this->$k = $aa[$k];
 			list($tab_erreur, $tab_warning) = RecuperationInfo($aa[$k]);
-			
-			/*foreach($tab_erreur as $err=>$ve)
-			//for($i = 0 ; $i<count($tab) ; $i++)
-			{
-				//$this->$err = $tab_erreur[$err];*/
-				$this->erreurs = $tab_erreur;/*
-			}
-			foreach($tab_warning as $warn=>$vw)
-			//for($i = 0 ; $i<count($tab) ; $i++)
-			{
-				//$this->$warn = $tab_warning[$warn];*/
-				$this->warnings = $tab_warning;/*
-			}*/
+			$this->erreurs = $tab_erreur;
+			$this->warnings = $tab_warning;
 		}
 	}
 }
@@ -92,15 +80,20 @@ function parseMol($mvalues) {
 
 	function RecuperationInfo ($url) {
 		//Construction du lien W3C
-		/* URL ONLINE : $url = "http://validator.w3.org/check?uri=".$url."&charset=%28detect+automatically%29&doctype=Inline&ss=1&outline=1&group=0&verbose=1&user-agent=W3C_Validator%2F1.3+http%3A%2F%2Fvalidator.w3.org%2Fservices";*/
-		$url = "file:///C:/wamp/www/Validator/tmp/1416907869/w3c.html";
+		// URL ONLINE : 
+		//$url = "http://validator.w3.org/check?uri=".$url."&charset=%28detect+automatically%29&doctype=Inline&ss=1&outline=1&group=0&verbose=1&user-agent=W3C_Validator%2F1.3+http%3A%2F%2Fvalidator.w3.org%2Fservices";
+		$url = "http://validator.w3.org/check?uri=".$url."&charset=(detect+automatically)&doctype=Inline&group=0&user-agent=W3C_Validator/1.3+http://validator.w3.org/services";
+		
+		//$url = "file:///C:/wamp/www/Validator/tmp/1416907869/w3c.html";
 		// INITIALISATION cURL
 		$ch = curl_init();
 		// Page à récupérer
 		curl_setopt($ch, CURLOPT_URL, $url);
 		// Retour de la page
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+		curl_setopt($ch,CURLOPT_USERAGENT,'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.13) Gecko/20080311 Firefox/2.0.0.13');
 		// Retour dans un tableau
+		usleep(600000);
 		$resultat = curl_exec ($ch);
 		// Enregistrement du contenue
 		$w3cPage = new DOMDocument();
@@ -129,10 +122,9 @@ function parseMol($mvalues) {
 				// Selection des infos
 				$titre = $li->getElementsByTagName('span')->item(1)->nodeValue;
 				$descr = $li->getElementsByTagName('p')->item(1)->nodeValue;
-				if( null !== ($li->getElementsByTagName('p')->item(1)))
-					$list = $li->getElementsByTagName('p')->item(1)->nodeValue;
-				else
-					$list = $li->getElementsByTagName('ul')->item(0)->nodeValue;
+					$list = $li->getElementsByTagName('p')->item(2)->nodeValue;
+				if( null !== ($li->getElementsByTagName('ul')->item(0)))
+					$descr .= $li->getElementsByTagName('ul')->item(0)->nodeValue;
 				$info = array (
 					'titre' => $titre,
 					'descr' => $descr,
@@ -141,6 +133,8 @@ function parseMol($mvalues) {
 				array_push($tab_warning, new Warning($info));
 			}
     	}
+		
+		//print_r($w3cPage);
 		return array($tab_erreur, $tab_warning) ;
 	}
 

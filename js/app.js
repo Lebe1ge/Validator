@@ -10,39 +10,6 @@
 				$scope.urls = {};
 				
 				////////////////////////////////////////////////////
-				//////////////// AFFICHAGE ERREURS /////////////////
-				////////////////////////////////////////////////////
-				
-				$scope.tab_err = -1;
-				$scope.isSet_err = function (checkTab_err) {
-					return $scope.tab_err === checkTab_err;
-				};
-
-				$scope.setTab_err = function (setTab_err) {
-					if($scope.tab_err == setTab_err)
-						setTab_err = -1;
-					$scope.tab_err = setTab_err;
-				};
-				////////////////////////////////////////////////////
-								
-				////////////////////////////////////////////////////
-				//////////////// AFFICHAGE WARNING /////////////////
-				////////////////////////////////////////////////////
-				
-				$scope.tab_warn = -1;
-				$scope.isSet_warn = function (checkTab_warn) {
-					return $scope.tab_warn === checkTab_warn;
-				};
-
-				$scope.setTab_warn = function (setTab_warn) {
-					if($scope.tab_warn == setTab_warn)
-						setTab_warn = -1;
-					$scope.tab_warn = setTab_warn;
-				};
-				////////////////////////////////////////////////////
-				
-				
-				////////////////////////////////////////////////////
 				////////////// FONCTION DECOUP + W3C ///////////////
 				////////////////////////////////////////////////////
 				function callback(url_sitemap) {
@@ -50,7 +17,7 @@
 						$http.get('./decoupage.php?sitemap=' + url_sitemap)
 						.success(function (data) {
 							$scope.urls = data;
-							console.log(data);
+							//console.log(data);
 						}).error(function (data, status, headers, config) {
 							console.log("ERREUR");
 						});
