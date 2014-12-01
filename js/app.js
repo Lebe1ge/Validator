@@ -6,18 +6,39 @@
             restrict: 'E',
             templateUrl: "search.php",
             controller: ['$http', '$scope', function ($http, $scope) {
-				var sitemap = '';
-				$scope.urls = {};
+				var url_sitemap = '';
+				$scope.sitemap = {};
+				$scope.urls = [];
+				$scope.reponse = {};
+								
+				////////////////////////////////////////////////////
+				//////////////// FONCTION VALIDATOR ////////////////
+				////////////////////////////////////////////////////
+				function validator(url) {
+							$http.get('./recup.php?url=' + url)
+							.success(function (data) {
+								$scope.urls.push(data);
+							}).error(function (data, status, headers, config) {
+								console.log("ERREUR");
+							});
+				}
+				////////////////////////////////////////////////////
 				
 				////////////////////////////////////////////////////
 				////////////// FONCTION DECOUP + W3C ///////////////
 				////////////////////////////////////////////////////
 				function callback(url_sitemap) {
 					if (url_sitemap !== '') {
-						$http.get('./decoupage.php?sitemap=' + url_sitemap)
+						$http.get('./decoupage.php?sitemap=' + url_sitemap, {onComplete: validator})
 						.success(function (data) {
-							$scope.urls = data;
-							//console.log(data);
+						 	$scope.sitemap = data;
+							if ($scope.sitemap !== '') {
+								for (var key = 0; key < $scope.sitemap.length; ++key)
+						 		{
+						 			url = $scope.sitemap[key].loc;
+						 			setTimeout(validator(url), 10000);
+						 		}
+						 	}
 						}).error(function (data, status, headers, config) {
 							console.log("ERREUR");
 						});
@@ -35,8 +56,8 @@
 						
 						$http.get('./copy_sitemap.php?url=' + $scope.search.url, {onComplete: callback})
 						.success(function (data) {
-							sitemap = data;
-							callback(sitemap);
+							// Data = URL du sitemap
+							callback(data);
 						}).error(function (data, status, headers, config) {
 							console.log("ERREUR");
 						});

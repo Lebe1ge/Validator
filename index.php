@@ -28,7 +28,7 @@
 					   {
 						   if($_POST['pseudo'] == $log && $_POST['mdp'] == $mdp)
 						   {
-							   $_SESSION['pseudo'] == $_POST['pseudo'];
+							   $_SESSION['pseudo'] = $_POST['pseudo'];
 							   echo ('<div class="alert alert-success" style="margin:20px;" role="alert">Connexion réussi</div>');
 							   echo ('<META HTTP-EQUIV="Refresh" 
 							   		CONTENT="3;

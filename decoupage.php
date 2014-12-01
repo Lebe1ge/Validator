@@ -10,9 +10,9 @@ class AdresseUrl {
 		foreach ($aa as $k=>$v)
 		{
 			$this->$k = $aa[$k];
-			list($tab_erreur, $tab_warning) = RecuperationInfo($aa[$k]);
+			/*list($tab_erreur, $tab_warning) = RecuperationInfo($aa[$k]);
 			$this->erreurs = $tab_erreur;
-			$this->warnings = $tab_warning;
+			$this->warnings = $tab_warning;*/
 		}
 	}
 }
