@@ -63,9 +63,12 @@ function RecuperationInfo ($url) {
 		$w3cPage->loadHTML($resultat);
 		$tab_erreur = array();
 		$tab_warning = array();
+		
+		$result = $w3cPage->getElementsByTagName('td')->item(0)->nodeValue;
+		
 		//recherche de la div msg_err
 		foreach($w3cPage->getElementsByTagName('li') as $li){
-    		if($li->getAttribute('class') == "msg_err"){
+    		if(($li->getAttribute('class') == "msg_err") && (preg_match("/Error/", $result))){
 				// Selection des infos
 				$ligne = $li->getElementsByTagName('em')->item(0)->nodeValue;
 				$titre = $li->getElementsByTagName('span')->item(1)->nodeValue;
@@ -80,7 +83,8 @@ function RecuperationInfo ($url) {
 				
 				array_push($tab_erreur, new Rorre($info));
 			}
-    		if(($li->getAttribute('class') == "msg_warn") || ($li->getAttribute('class') == "msg_info")){
+    		if((($li->getAttribute('class') == "msg_warn") || ($li->getAttribute('class') == "msg_info"))
+			   && (preg_match("/warning/", $result))){
 				// Selection des infos
 				$titre = $li->getElementsByTagName('span')->item(1)->nodeValue;
 				$descr = $li->getElementsByTagName('p')->item(1)->nodeValue;

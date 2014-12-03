@@ -1,4 +1,4 @@
-<?php session_start(); include('include/connect.php'); $log = "admin";$mdp ="mdp";$message=""; ?>
+<?php session_start(); include('include/connect.php'); ?>
 <!DOCTYPE html>
 <html lang="en" ng-app="connect">
     <head>
@@ -18,9 +18,15 @@
         </header>
         <section id="connexion" class="blue-box">
             <?php
+			 if (isset($_GET['action']))
+				 {
+					 session_destroy();
+				 }
 				if(isset($_SESSION['pseudo']))
 				   {
-					echo ('<div class="alert alert-info" style="margin:20px;" role="alert">Vous êtes déjà connecté</div>');   
+					echo ('<div class="alert alert-info" style="margin:20px;" role="alert">Vous êtes déjà connecté</div>');
+					echo('<a href="validator.php" role="button" class="btn btn-primary" style="display:block; margin:auto; margin-bottom:20px;">Acceder au validateur</a>');
+					echo('<a href="index.php?action=deco" role="button" class="btn btn-danger" style="display:block; margin:auto; margin-bottom:20px;">Se deconnecter</a>');
 				   }
 				   else
 				   {
@@ -41,8 +47,8 @@
             <form method="post" action="index.php" enctype="multipart/form-data" >
                 <fieldset>
 					<?php if($message!="")echo($message."<br>");?>
-                    <input type="text" name="pseudo" placeholder="Identifiant">
-                    <input type="password" name="mdp" placeholder="Mot de passe">
+                    <input type="text" name="pseudo" placeholder="Identifiant" required>
+                    <input type="password" name="mdp" placeholder="Mot de passe" required>
                     <input style="color:#365D95" class="btn right" type="submit" value="Se connecter">
                 </fieldset>
             </form>

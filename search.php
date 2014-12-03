@@ -9,20 +9,30 @@
 <section>
 	<div class="result blue-box" ng-show="urls.length">
 		<div class="row tb-result bg-primary">
-			<div class="col-md-6">URL de la page</div>
+			<div class="col-md-6">URL de la page [{{key}}/{{sitemap.length}}]</div>
 			<div class="col-md-3">Erreurs</div>
 			<div class="col-md-3">Warning</div>
 		</div>
 		<div class="row tb-result bg-danger" ng-repeat="url in urls track by $index">
 			<div id="accordion">
-				<div class="col-md-6">{{url.loc}}</div>
+				<div class="col-md-5">
+					<a ng-href="{{url.loc}}" target="_blank" >
+						{{url.loc}}
+					</a>
+				</div>
+				<div class="col-md-1">
+					<a href="#" class="btn btn-primary btn-xs active" role="button"
+					ng-href="http://validator.w3.org/check?uri={{url.loc}}&charset=(detect+automatically)&doctype=Inline&group=0&user-agent=W3C_Validator/1.3+http://validator.w3.org/services" target="_blank" >W3C</a>
+				</div>
 				<div class="col-md-3">
 					<a data-toggle="collapse" data-parent="#accordion" href="#erreur{{$index}}">
 						{{url.erreurs.length}} Erreurs
 					</a>
 				</div>
 				<div class="col-md-3">
-					<a data-toggle="collapse" data-parent="#accordion" href="#warning{{$index}}">{{url.warnings.length}} Warning</a>
+					<a data-toggle="collapse" data-parent="#accordion" href="#warning{{$index}}">
+					   {{url.warnings.length}} Warning
+					</a>
 				</div>
 				<div class="col-md-12 container-fluid collapse" id="erreur{{$index}}" ng->
 					<div class="row tb-result bg-danger" ng-repeat="erreur in url.erreurs">
