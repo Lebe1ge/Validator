@@ -9,24 +9,88 @@
 				var url_sitemap = '';
 				$scope.sitemap = {};
 				$scope.urls = [];
-								
+				$scope.message = '';
+				$scope.progress = 0;
+				var nberreur =0;
+				var nbwarning =0;
+				$scope.value = [];
+				$scope.value["warning"] = [];
+				$scope.value["error"] = [];
+				$scope.pause = 0;
+				$scope.pauseKey = '';
+
+				$scope.stop = function(){
+					if ($scope.pause == 1)
+					{
+						$scope.pause = 0;
+						validator($scope.pauseKey);
+					}
+					else
+						$scope.pause = 1;
+				}
+				////////////////////////////////////////////////////
+				////////////////  FONCTION COULEUR  ////////////////
+				////////////////////////////////////////////////////
+				$scope.getClass=function( nberreur, nbwarning){
+					if( nbwarning > 0)
+					{
+						if( nberreur > 0)
+							return 'bg-danger';
+						else
+							return 'bg-warning';
+					}
+					else
+						return 'bg-success';
+				};
+				////////////////////////////////////////////////////
+				
+				////////////////////////////////////////////////////
+				////////////// FONCTION ACTIVE BOUTON //////////////
+				////////////////////////////////////////////////////
+				$scope.changeClassError = function($index){
+						if ($scope.value["error"][$index] == $index)
+							$scope.value["error"][$index] = "vide";
+						 else
+							$scope.value["error"][$index] = $index;
+				};
+				$scope.changeClassWarning = function($index){
+						if ($scope.value["warning"][$index] == $index)
+							$scope.value["warning"][$index] = "vide";
+						 else
+							$scope.value["warning"][$index] = $index;
+				};
+				
+				////////////////////////////////////////////////////
+
 				////////////////////////////////////////////////////
 				//////////////// FONCTION VALIDATOR ////////////////
 				////////////////////////////////////////////////////
 				function validator(url) {
 					
-							// onComplete: function() {$timeout(validator($scope.sitemap[key++].loc), 10000);}})
 							$http.get('./recup.php?url=' + url)
 									  
 							.success(function (data) {
 								$scope.urls.push(data);
-								if(++$scope.key < $scope.sitemap.length)
-									//$timeout(validator($scope.sitemap[key].loc),5000)
-									$timeout(function() {validator($scope.sitemap[$scope.key].loc);}, 1000);
+								
+								if($scope.pause == 0)
+								{
+									if(++$scope.key < $scope.sitemap.length){
+										$scope.value["warning"][$scope.key] = "vide";
+										$scope.value["error"][$scope.key] = "vide";
+										$timeout(function() {validator($scope.sitemap[$scope.key].loc);}, 1000);
+									}
+								}
+								else
+								{
+									$scope.pauseKey = $scope.sitemap[++$scope.key].loc;	
+								}
+
+								$scope.progress = ($scope.key/$scope.sitemap.length)*100;
+								
+								
 							}).error(function (data, status, headers, config) {
 								console.log("ERREUR");
 							});
-					
 				}
 				////////////////////////////////////////////////////
 				
@@ -38,15 +102,12 @@
 						$http.get('./decoupage.php?sitemap=' + url_sitemap)
 						.success(function (data) {
 						 	$scope.sitemap = data;
-							if ($scope.sitemap !== '') {
+							if ($scope.sitemap !== '') 
+							{
 								$scope.key = 0;
-								//for (var key = 0; key < $scope.sitemap.length; ++key)
-						 		//{
-						 			//url = $scope.sitemap[key].loc;
-									//$interval(validator(url), 10000);
-									//validator(url);
-									validator($scope.sitemap[$scope.key].loc);
-						 		//}
+								$scope.value["warning"][$scope.key] = "vide";
+								$scope.value["error"][$scope.key] = "vide";
+								validator($scope.sitemap[$scope.key].loc);
 						 	}
 						}).error(function (data, status, headers, config) {
 							console.log("ERREUR");
@@ -62,18 +123,29 @@
 				////////////////////////////////////////////////////
 				$scope.addSearch = function (url) {
 					if (url.$valid) {
-						
-						var url_sitemap = '';
-						$scope.sitemap = {};
-						$scope.urls = [];
-						
-						$http.get('./copy_sitemap.php?url=' + $scope.search.url, {onComplete: callback})
-						.success(function (data) {
-							// Data = URL de la copie sitemap
-							callback(data);
-						}).error(function (data, status, headers, config) {
-							console.log("ERREUR");
-						});
+						var extension = $scope.search.url.substring($scope.search.url.lastIndexOf("."))
+						if(extension.toLowerCase() == ".xml")
+						{
+							$scope.message = '';
+							var url_sitemap = '';
+							$scope.sitemap = {};
+							$scope.urls = [];
+							$scope.pause = 0;
+							$scope.pauseKey = 0;
+
+							$http.get('./copy_sitemap.php?url=' + $scope.search.url, {onComplete: callback})
+							.success(function (data) {
+								// Data = URL de la copie sitemap
+								callback(data);
+							}).error(function (data, status, headers, config) {
+								console.log("ERREUR");
+							});
+						}
+						else
+						{
+							$scope.message = 'Merci de saisir une URL du type .xml';
+							$scope.search.url = 0;
+						}
 					}
                 };
 				////////////////////////////////////////////////////

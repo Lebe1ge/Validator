@@ -80,6 +80,24 @@ input[type="text"], input[type="password"], input[type="url"] {
     color: #365D95;
 }
 
+#message {
+	width: 500px;
+	display: block;
+	margin-right: auto;
+	margin-left: auto;
+}
+
+#progress {
+	padding: 0 20px 0 20px;
+	width: 100%;
+}
+
+#progress button {
+	height: 20px;
+	padding-top: 0;
+	padding-bottom: 0;
+}
+
 .result  {
     padding: 20px;
     text-align: center
@@ -88,15 +106,25 @@ input[type="text"], input[type="password"], input[type="url"] {
 .tb-result {
     border: 1px solid #365D95;
     margin: 0px;
+	line-height: 42px;
 }
 
-.derouleur {
-     transform: scaleY(0);
-     transform-origin: 50% 0;
-     transition:transform 1s ease;
+.tb-result a {
+	color: #fff;
 }
-.deroulement:hover {
-     transform: scaleY(1);
+
+.tb-result button {
+	width: 100%;
 }
-	
+
+div.bg-danger {
+	background-color: #d9534f;
+}
+
+div.bg-warning {
+	background-color: #f0ad4e;
+}
+
+div.bg-success {
+	background-color: #d9534f;
 }

@@ -56,7 +56,6 @@ function RecuperationInfo ($url) {
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 		curl_setopt($ch,CURLOPT_USERAGENT,'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.13) Gecko/20080311 Firefox/2.0.0.13');
 		// Retour dans un tableau
-		//usleep(600000);
 		$resultat = curl_exec ($ch);
 		// Enregistrement du contenue
 		$w3cPage = new DOMDocument();
@@ -103,6 +102,5 @@ function RecuperationInfo ($url) {
 	}
 
 echo json_encode(new AdresseUrl($_GET['url']));
-//sleep(10);
 
 ?>
