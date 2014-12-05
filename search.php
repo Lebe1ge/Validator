@@ -28,7 +28,7 @@
 <section>
 	<div class="result blue-box" ng-show="urls.length">
 		<div class="row tb-result bg-primary">
-			<div class="col-md-7">URL de la page [{{key}}/{{sitemap.length}}]</div>
+			<div class="col-md-7">URL de la page [{{key}}/{{sitemap.length}}] <span ng-show="nonTraite > 0">dont {{nonTraite}} non traité(s)</span></div>
 			<div class="col-md-1">W3C</div>
 			<div class="col-md-2">Erreurs</div>
 			<div class="col-md-2">Warning</div>

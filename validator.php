@@ -1,4 +1,4 @@
-<?php session_start(); include('include/connect.php'); ?>
+<?php session_start(); include('include/config.php'); ?>
 <!DOCTYPE html>
 <html lang="en" ng-app="connect">
     <head>

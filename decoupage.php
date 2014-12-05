@@ -34,6 +34,10 @@ function readDatabase($filename) {
 				{
 					$tdb[] = parseMol($tbb);
 				}
+				else
+				{
+					$tdb[] = "NOHTML";
+				}
 			}
 		} else {
 			continue;

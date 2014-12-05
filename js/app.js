@@ -18,6 +18,7 @@
 				$scope.value["error"] = [];
 				$scope.pause = 0;
 				$scope.pauseKey = '';
+				$scope.nonTraite = 0;
 
 				$scope.stop = function(){
 					if ($scope.pause == 1)
@@ -70,7 +71,10 @@
 							$http.get('./recup.php?url=' + url)
 									  
 							.success(function (data) {
-								$scope.urls.push(data);
+								if(data.loc == "undefined")
+									$scope.nonTraite++;
+								else
+									$scope.urls.push(data);
 								
 								if($scope.pause == 0)
 								{
@@ -132,6 +136,7 @@
 							$scope.urls = [];
 							$scope.pause = 0;
 							$scope.pauseKey = 0;
+							$scope.nonTraite = 0;
 
 							$http.get('./copy_sitemap.php?url=' + $scope.search.url, {onComplete: callback})
 							.success(function (data) {
