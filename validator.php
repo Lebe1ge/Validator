@@ -1,6 +1,6 @@
 <?php session_start(); include('include/config.php'); ?>
 <!DOCTYPE html>
-<html lang="en" ng-app="connect">
+<html lang="en" ng-app="connectController">
     <head>
         <meta charset="utf-8" />
         <title>Valid[W3C]</title>

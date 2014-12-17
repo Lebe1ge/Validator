@@ -128,3 +128,13 @@ div.bg-warning {
 div.bg-success {
 	background-color: #d9534f;
 }
+
+.searchLink {
+	margin-top: 6px;
+	height: 30px;
+	background-color: #428bca;
+}
+
+.searchLink textarea:-moz-placeholder {
+	color: #fff;
+}

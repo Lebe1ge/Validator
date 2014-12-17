@@ -18,39 +18,40 @@
         </header>
         <section id="connexion" class="blue-box">
             <?php
-			 if (isset($_GET['action']))
-				 {
-					 session_destroy();
-				 }
-				if(isset($_SESSION['pseudo']))
-				   {
-					echo ('<div class="alert alert-info" style="margin:20px;" role="alert">Vous êtes déjà connecté</div>');
-					echo('<a href="validator.php" role="button" class="btn btn-primary" style="display:block; margin:auto; margin-bottom:20px;">Acceder au validateur</a>');
-					echo('<a href="index.php?action=deco" role="button" class="btn btn-danger" style="display:block; margin:auto; margin-bottom:20px;">Se deconnecter</a>');
-				   }
-				   else
-				   {
-					   if(isset($_POST['pseudo'])&&isset($_POST['mdp']))
-					   {
-						   if($_POST['pseudo'] == $log && $_POST['mdp'] == $mdp)
-						   {
-							   $_SESSION['pseudo'] = $_POST['pseudo'];
-							   echo ('<div class="alert alert-success" style="margin:20px;" role="alert">Connexion réussi</div>');
-							   echo ('<META HTTP-EQUIV="Refresh" 
-							   		CONTENT="3;
-									URL=http://127.0.0.1/validator/validator.php">');
-						   }
-						   else
-							   $message = '<div class="alert alert-danger" style="margin:20px;" role="alert">Identifiants invalides</div>';
-					   }
-			?>
+			if (isset($_GET['action']))
+			{
+				session_destroy();
+				$message = '<div class="alert alert-warning" style="margin:20px;" role="alert">Déconnexion réussi</div>';
+			}
+			if(isset($_SESSION['pseudo']))
+			{ ?>
+				<div class="alert alert-info" style="margin:20px;" role="alert">Vous êtes déjà connecté</div>
+				<a href="validator.php" role="button" class="btn btn-primary" style="display:block; margin:auto; margin-bottom:20px;">Acceder au validateur</a>
+				<a href="index.php?action=deco" role="button" class="btn btn-danger" style="display:block; margin:auto; margin-bottom:20px;">Se deconnecter</a>
+			
+			<?php }
+			else
+			{
+				if(isset($_POST['pseudo']) && isset($_POST['mdp']))
+				{
+					if($_POST['pseudo'] == $log && $_POST['mdp'] == $mdp)
+					{
+						$_SESSION['pseudo'] = $_POST['pseudo'];
+						echo ('<div class="alert alert-success" style="margin:20px;" role="alert">Connexion réussi</div>');
+						header("refresh: 3; url='validator.php'");
+						exit;
+					}
+					else
+						$message = '<div class="alert alert-danger" style="margin:20px;" role="alert">Identifiants invalides</div>';
+				}
+				 ?>
             <form method="post" action="index.php" enctype="multipart/form-data" >
                 <fieldset>
-					<?php if($message!="")echo($message."<br>");?>
                     <input type="text" name="pseudo" placeholder="Identifiant" required>
                     <input type="password" name="mdp" placeholder="Mot de passe" required>
                     <input style="color:#365D95" class="btn right" type="submit" value="Se connecter">
                 </fieldset>
+				<?php echo($message);?>
             </form>
 			<?php }?>
         </section>

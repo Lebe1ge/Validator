@@ -28,16 +28,24 @@
 <section>
 	<div class="result blue-box" ng-show="urls.length">
 		<div class="row tb-result bg-primary">
-			<div class="col-md-7">URL de la page [{{key}}/{{sitemap.length}}] <span ng-show="nonTraite > 0">dont {{nonTraite}} non traité(s)</span></div>
+			<div class="col-md-5">URL de la page [{{(urls | filter:searchUrl).length}}/{{sitemap.length}}] <span ng-show="nonTraite > 0">dont {{nonTraite}} non traité(s)</span></div>
+			<div class="col-md-2">
+				<form action="" method="POST" role="form">
+					<input id="search" type="text" class="form-control searchLink" ng-model="searchUrl.loc" placeholder="Rechercher URL">
+				</form>
+			</div>
 			<div class="col-md-1">W3C</div>
 			<div class="col-md-2">Erreurs</div>
 			<div class="col-md-2">Warning</div>
 		</div>
-		<div class="row tb-result" ng-repeat="url in urls track by $index">
+	
+	
+		<div class="row tb-result" ng-repeat="url in urls | filter:searchUrl.loc track by $index">
 			<div id="accordion">
 				<div class="col-md-7 pad5 text-left" ng-class="getClass(url.erreurs.length, url.warnings.length)">
 					<a ng-href="{{url.loc}}" target="_blank">
-						{{url.loc}}
+						<span ng-show="url.loc.length <= 60">{{url.loc}}</span>
+						<span ng-show="url.loc.length > 60">{{url.loc | limitTo:60}} ...</span>
 					</a>
 				</div>
 				<div class="col-md-1 pad5" ng-class="getClass(url.erreurs.length, url.warnings.length)">
@@ -57,10 +65,9 @@
 					</button>
 				</div>
 				<div class="col-md-12 container-fluid collapse" id="erreur{{$index}}" ng->
-					<div class="row tb-result bg-danger" ng-repeat="erreur in url.erreurs">
-						<div class="col-md-2">{{erreur.ligne}}</div>
-						<div class="col-md-3">{{erreur.titre}}</div>
-						<div class="col-md-7"><kbd>{{erreur.code}}</kbd></div>
+					<div class="row tb-result bg-danger text-left" ng-repeat="erreur in url.erreurs">
+						<div class="col-md-12">{{erreur.ligne}}, <strong>{{erreur.titre}}</strong></div>
+						<div class="col-md-12"><kbd>{{erreur.code}}</kbd></div>
 					</div>
 				</div>
 				<div class="col-md-12 container-fluid collapse" id="warning{{$index}}">

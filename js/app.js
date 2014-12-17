@@ -1,6 +1,7 @@
 (function () {
+
+	var app = angular.module('connectController', ['ng']);
 	
-	var app = angular.module('connect', []);
 	app.directive("search", function () {
         return {
             restrict: 'E',
@@ -19,6 +20,7 @@
 				$scope.pause = 0;
 				$scope.pauseKey = '';
 				$scope.nonTraite = 0;
+				$scope.searchUrl = '';
 
 				$scope.stop = function(){
 					if ($scope.pause == 1)
@@ -81,16 +83,15 @@
 									if(++$scope.key < $scope.sitemap.length){
 										$scope.value["warning"][$scope.key] = "vide";
 										$scope.value["error"][$scope.key] = "vide";
-										$timeout(function() {validator($scope.sitemap[$scope.key].loc);}, 1000);
+										$timeout(function() {validator($scope.sitemap[$scope.key].url);}, 3000);
 									}
 								}
 								else
 								{
-									$scope.pauseKey = $scope.sitemap[++$scope.key].loc;	
+									$scope.pauseKey = $scope.sitemap[++$scope.key].loc;
 								}
 
 								$scope.progress = ($scope.key/$scope.sitemap.length)*100;
-								
 								
 							}).error(function (data, status, headers, config) {
 								console.log("ERREUR");
@@ -99,31 +100,7 @@
 				////////////////////////////////////////////////////
 				
 				////////////////////////////////////////////////////
-				////////////// FONCTION DECOUP + W3C ///////////////
-				////////////////////////////////////////////////////
-				function callback(url_sitemap) {
-					if (url_sitemap !== '') {
-						$http.get('./decoupage.php?sitemap=' + url_sitemap)
-						.success(function (data) {
-						 	$scope.sitemap = data;
-							if ($scope.sitemap !== '') 
-							{
-								$scope.key = 0;
-								$scope.value["warning"][$scope.key] = "vide";
-								$scope.value["error"][$scope.key] = "vide";
-								validator($scope.sitemap[$scope.key].loc);
-						 	}
-						}).error(function (data, status, headers, config) {
-							console.log("ERREUR");
-						});
-					}
-					else 
-					{ console.log("Sitemap VIDE"); }
-				}
-				////////////////////////////////////////////////////
-				
-				////////////////////////////////////////////////////
-				////////////FONCTION COPIE SITEMAP LOCAL////////////
+				///////////////  FONCTION DECOUPAGE  ///////////////
 				////////////////////////////////////////////////////
 				$scope.addSearch = function (url) {
 					if (url.$valid) {
@@ -131,25 +108,30 @@
 						if(extension.toLowerCase() == ".xml")
 						{
 							$scope.message = '';
-							var url_sitemap = '';
-							$scope.sitemap = {};
 							$scope.urls = [];
 							$scope.pause = 0;
 							$scope.pauseKey = 0;
 							$scope.nonTraite = 0;
 
-							$http.get('./copy_sitemap.php?url=' + $scope.search.url, {onComplete: callback})
+							$http.get('./decoupage.php?sitemap=' + $scope.search.url)
 							.success(function (data) {
-								// Data = URL de la copie sitemap
-								callback(data);
+								console.log(data);
+								$scope.sitemap = data;
+								if ($scope.sitemap !== '') 
+								{
+									$scope.key = 0;
+									$scope.value["warning"][$scope.key] = "vide";
+									$scope.value["error"][$scope.key] = "vide";
+									validator($scope.sitemap[$scope.key].url);
+								}
 							}).error(function (data, status, headers, config) {
 								console.log("ERREUR");
 							});
 						}
 						else
 						{
-							$scope.message = 'Merci de saisir une URL du type .xml';
-							$scope.search.url = 0;
+							$scope.message = 'Merci de saisir une URL de la forme http://www.monsite.fr/sitemap.xml';
+							$scope.search.url = '';
 						}
 					}
                 };
